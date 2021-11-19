@@ -42,4 +42,4 @@ _Se hicieron uso de la siguientes tecnologías_
 
 ## Expresiones de Gratitud 🎁
 
-Agradecemos al profesor Oscar Castillo de la materia de Desarrollo de Aplicaciones Web por habernos enseñado por el semestre.
+Agradecemos al profesor Jorge Carlos Valverde Rebaza de la materia de Sistemas inteligentes por habernos enseñado por el semestre.
