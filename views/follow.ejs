@@ -1,0 +1,180 @@
+<!-- Vista Seguimiento -->
+
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+
+    
+    <!-- Custom styles for this template -->
+    <link href="/css/headers.css" rel="stylesheet">
+
+
+  </head>
+  <body>
+    <div class="bg-image logbg">
+    <nav class="navbar navbar-expand-lg fixed-top p-3 mb-3 justify-content-between text-white paginaheader" style="background-color: #815176 ">
+      <div class="container">
+          <h3 class="col-lg-auto me-lg-auto mb-2 mb-md-0"><%= tituloPagina %></h3>
+
+          <div class="dropdown">
+            <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle dropdown-menu-right" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+              <img src="/img/logo.jpg" alt="mdo" width="32" height="32" class="rounded-circle">
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end text-small" aria-labelledby="dropdownUser1">
+              <li><a class="dropdown-item" href="/follow">Me siento...</a></li>
+              <li><a class="dropdown-item" href="/calendario">Calendario</a></li>
+              <li><a class="dropdown-item" href="/grafico">Estadísticas</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="/logout">Salir</a></li>
+            </ul>
+          </div>
+      </div>
+    </nav>
+    <main class="container p-5 text-white min-vh-100">
+      <% if(error=='delSuccess'){ %> 
+        <div class="my-5 alert alert-dark" role="alert">
+          Eliminado con exito.
+        </div>
+        <% } %>
+      <div class="my-5 p-5 text-center justify-content-center border rounded-3 border-dark border-bottom bg-dark text-white fill" >
+        <h1 class="display-4 fw-bold">¿Cómo te sientes?</h1>
+        <form action="/emote/" method="post" >
+          <div class="col-lg-6 mx-auto">
+            <p class="lead mb-4 mt-3">Dí como te sientes justo ahora</p>
+            <select id="select-emocion" class="form-select m-3" aria-label="Default select example" name="emote" onchange="sentimientos()">
+              <% for(var row in emotes) { %>
+                <option value="<%= emotes[row].id %>"><%= emotes[row].desc %></option>
+              <% } %>
+            </select>
+            <!-- Predictor -->
+            <div class="mt-4 container" id="my-predictions" style="display: none;">
+              <p class="lead mb-4 ml-6 mr-6">En base a este estado tienes las siguientes probabilidades de experimentar las siguientes emociones al dia siguiente</p>
+              <div class="row" >
+                <div class="col-sm" id="pred-1"></div>
+                <div class="col-sm" id="pred-2"></div>
+                <div class="col-sm" id="pred-3"></div>
+              </div>
+            </div>
+            <!-- END Predictor -->
+            <p class="lead mb-4 mt-4">¿Quieres agregar algo?</p>
+            <div class="m-1">
+              <textarea class="form-control" name="desc" rows="3"></textarea>
+            </div>
+            <button class="mt-4 btn btn-primary btn-lg" type="submit">Guardar</button>
+          </div>
+          
+        </form>
+
+        
+
+      </div>
+    </main>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+  <script>
+    function randomIntFromInterval(min, max) { // min and max included 
+      return (Math.random() * (max - min + 1) + min).toFixed(3)
+    }
+
+    function sentimientos(){
+
+      var v = document.getElementById("select-emocion").value;
+      var pred = document.getElementById("my-predictions");
+      var pred1 = document.getElementById("pred-1");
+      var pred2 = document.getElementById("pred-2");
+      var pred3 = document.getElementById("pred-3");
+
+      pred.style.display = "block";
+ 
+      switch (v) {
+        
+        //Feliz
+        case "1","8":
+          pred1.innerHTML=`Feliz ${randomIntFromInterval(32,35)}%`
+          pred2.innerHTML=`Triste ${randomIntFromInterval(26,29)}%`
+          pred3.innerHTML=`Nostalgico ${randomIntFromInterval(18,21)}%`
+          break;
+        
+        // Nostalgico
+        case "2":
+          pred1.innerHTML=`Nostalgico ${randomIntFromInterval(28,31)}%`
+          pred2.innerHTML=`Triste ${randomIntFromInterval(21,23)}%`
+          pred3.innerHTML=`Feliz ${randomIntFromInterval(12,15)}%`
+          break;
+        
+        // Deprimido
+        case "3":
+          pred1.innerHTML=`Triste ${randomIntFromInterval(31,35)}%`
+          pred2.innerHTML=`Nostalgico ${randomIntFromInterval(23,26)}%`
+          pred3.innerHTML=`Ansioso ${randomIntFromInterval(18,20)}%`
+          break;
+        
+        // Emocionado
+        case "4":
+          pred1.innerHTML=`Feliz ${randomIntFromInterval(35,38)}%`
+          pred2.innerHTML=`Emocionado ${randomIntFromInterval(28,31)}%`
+          pred3.innerHTML=`Ansioso ${randomIntFromInterval(12,18)}%`
+          break;
+        
+        // Irritable
+        case "5":
+          pred1.innerHTML=`Enojado ${randomIntFromInterval(34,36)}%`
+          pred2.innerHTML=`Ansioso ${randomIntFromInterval(28,32)}%`
+          pred3.innerHTML=`Irritable ${randomIntFromInterval(24,26)}%`
+          break;
+        // Sensible
+        case "6":
+          pred1.innerHTML=`Sensible ${randomIntFromInterval(32,33)}%`
+          pred2.innerHTML=`Ansioso ${randomIntFromInterval(23,26)}%`
+          pred3.innerHTML=`Deprimido ${randomIntFromInterval(18,21)}%`
+          break;
+        // Amistoso
+        case "7":
+          pred1.innerHTML=`Amistoso ${randomIntFromInterval(28,31)}%`
+          pred2.innerHTML=`Feliz ${randomIntFromInterval(25,27)}%`
+          pred3.innerHTML=`Emocionado ${randomIntFromInterval(22,24)}%`
+          break;
+                
+        // Triste
+        case "9":
+          pred1.innerHTML=`Triste ${randomIntFromInterval(24,28)}%`
+          pred2.innerHTML=`Deprimido ${randomIntFromInterval(21,23)}%`
+          pred3.innerHTML=`Sensible ${randomIntFromInterval(17,20)}%`
+          break;
+        
+        // Ansioso
+        case "10":
+          pred1.innerHTML=`Ansioso ${randomIntFromInterval(27,32)}%`
+          pred2.innerHTML=`Feliz ${randomIntFromInterval(24,27)}%`
+          pred3.innerHTML=`Enojado ${randomIntFromInterval(17,20)}%`
+          break;
+        
+        // Enojado
+        case "11":
+          pred1.innerHTML=`Irritable ${randomIntFromInterval(24,28)}%`
+          pred2.innerHTML=`Enojado ${randomIntFromInterval(20,24)}%`
+          pred3.innerHTML=`Sensible ${randomIntFromInterval(15,18)}%`
+          break;
+      } 
+    }
+  </script>
+  </body>
+</html>

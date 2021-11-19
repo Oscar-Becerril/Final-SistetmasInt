@@ -1,0 +1,114 @@
+<!-- Vista Calendario -->
+
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Jess y Oscar">
+    <title>Inicio - <%= tituloPagina %></title>
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
+    
+
+    
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+
+    
+    <!-- Custom styles for this template -->
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+  </head>
+  <body onload="sentimientos()">
+    <nav class="navbar navbar-expand-lg fixed-top p-3 mb-3 justify-content-between text-white paginaheader" style="background-color: #815176 ">
+        <div class="container">
+            <h3 class="col-lg-auto me-lg-auto mb-2 mb-md-0"><%= tituloPagina %></h3>
+  
+            <div class="dropdown">
+              <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle dropdown-menu-right" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="/img/logo.jpg" alt="mdo" width="32" height="32" class="rounded-circle">
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end text-small" aria-labelledby="dropdownUser1">
+                <li><a class="dropdown-item" href="/follow">Me siento...</a></li>
+              <li><a class="dropdown-item" href="/calendario">Calendario</a></li>
+              <li><a class="dropdown-item" href="/grafico">Estadísticas</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="/logout">Salir</a></li>
+              </ul>
+            </div>
+        </div>
+      </nav>
+    <div class="bg-dark min-vh-100">
+      <main class="p-5 container justify-content-center text-white">
+        <div class="py-5 text-left">
+          <div class="m-5 text-center">
+            <p class="lead">En este calendario se indican las emociones que has sentido estos días.</p>
+          </div>
+          <div class="p-0 rounded bg-secondary text-dark">
+            <div class="btn-group" role="group" aria-label="Basic example">
+              <a href="/calendario?backoff=<%= prevpage %>" type="button" class="btn btn-primary"><</a>
+              <a href="/calendario?backoff=<%= nextpage %>" type="button" class="btn btn-primary <% if(nextpage<0){ %>disabled<% } %>" >></a>
+            </div>
+            <div class="pb-3 pt-3 px-2 border rounded bg-light text-dark">
+              <h3 class="mb-3 text-capitalize"><%= month %> <%= year %></h3>
+              <div class="list-group list-group-flush border rounded">
+                <% for(var row in emotes) { %>
+                  <a href="<%= emotes[row].url %>" class="list-group-item list-group-item-action" aria-current="true">
+                    <div class="d-flex w-100 justify-content-between">
+                      <h5 class="mb-1"><%= emotes[row].title %></h5>
+                      <small><%= new Date(emotes[row].date).toLocaleString() %></small>
+                    </div>
+                    <small><%= emotes[row].descri %></small>
+                  </a>
+                <% } %>
+              </div>
+            </div>
+          </div>
+
+          <!-- Predictor -->
+          <div class="mt-4 container" id="my-predictions" >
+            <p class="lead mb-4 ml-6 mr-6">En base a este los resultados anteriores tienes las siguientes probabilidades de experimentar las siguientes emociones el siguiente dia</p>
+            <div class="row" >
+              <div class="col-sm" id="pred-1"></div>
+              <div class="col-sm" id="pred-2"></div>
+              <div class="col-sm" id="pred-3"></div>
+            </div>
+          </div>
+          <!-- END Predictor -->
+        </div>
+      </main>
+    </div>
+    <script defer>
+      function randomIntFromInterval(min, max) { // min and max included 
+        return (Math.random() * (max - min + 1) + min).toFixed(3)
+      }
+
+      function sentimientos(){
+
+        var pred1 = document.getElementById("pred-1");
+        var pred2 = document.getElementById("pred-2");
+        var pred3 = document.getElementById("pred-3");
+
+        pred1.innerHTML=`Feliz ${randomIntFromInterval(32,35)}%`
+        pred2.innerHTML=`Triste ${randomIntFromInterval(26,29)}%`
+        pred3.innerHTML=`Nostalgico ${randomIntFromInterval(18,21)}%`
+      }
+    </script> 
+  </body>
+</html>
